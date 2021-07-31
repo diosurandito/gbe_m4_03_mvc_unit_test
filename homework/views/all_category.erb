@@ -1,0 +1,26 @@
+<h1>Category</h1>
+<a href="/items">All items<a>
+<a href="/categories">All categories<a>
+<table>
+    <thead>
+        <tr>
+            <th>name</th>
+        </tr>
+    <thead>
+    <tbody>
+        <% categories.each do |category| %>
+            <tr>
+                <td><%= category.name %></td>
+                <td><a href=<%= "/categories/#{category.id}" %>>Show<a></td>
+                <td><a href=<%= "/categories/#{category.id}/edit" %>>Edit<a></td>
+                <td>
+                    <form action=<%= "/categories/#{category.id}/delete" %> method="post" >
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<a href="/categories/create">Create new category<a>

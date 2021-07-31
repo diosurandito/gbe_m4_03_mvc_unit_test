@@ -1,0 +1,18 @@
+<h1>Edit <%= item.name %></h1>
+<form action="/items/<%= item.id %>/update" method="POST">
+    <p>Name:</p>
+    <input type="text" name="name" value=<%= item.name %>>
+    <p>Price:</p>
+    <input type="text" name="price" value=<%= item.price %>>
+    <div>
+        <p>Category:</p>
+        <% item_category_array = item.categories.map(&:id) %>
+        <% categories.each do |category| %>
+                <input type="checkbox" id=<%= category.id %> name="categories_id[]" value=<%= category.id %> 
+                    <%= "checked" if item_category_array.include?(category.id) %>
+                >
+                <label for=<%= category.id %>><%= category.name %></label><br>
+        <% end %>
+    </div>
+    <button type="submit">Update Item</button>
+</form>
