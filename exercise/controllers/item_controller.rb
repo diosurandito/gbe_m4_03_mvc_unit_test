@@ -50,7 +50,7 @@ class ItemController
         item = Item.get_with_categories_by_item_id(id)
 
         item.update(id, name, price)
-        item.update_categories(categories_id)
+        item.update_categories(categories_id.map(&:to_i))
     end
 
     def self.delete(params)

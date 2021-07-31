@@ -14,38 +14,38 @@ class Item
     def save
         client = create_db_client
 
-        return false unless valid?
-
         client.query("insert into items (name, price) values ('#{@name}', #{@price})")
-    end
-
-    def valid?
-        return false if @name.empty?
-        return false if @price.empty?
-
-        return true
     end
     
     def update(id, name, price)
         client = create_db_client
          
-        client.query("update items set name = '#{name}', price = #{price} where id = #{id}")
+        client.query("
+            update items 
+            set name = '#{name}',
+            price = #{price}
+            where id = #{id}
+        ")
     end
 
     def update_categories(categories_id)
-        categories_id = categories_id.nil? ? [] : categories_id.map(&:to_i)
-
         client = create_db_client
 
         new_categories_id = get_new_categories(categories_id)
         delete_categories_id = get_delete_categories(categories_id)
 
         new_categories_id.each do | category_id |
-            client.query("insert into item_categories(item_id, category_id) values (#{id}, #{category_id})")
+            client.query("
+                insert into item_categories(item_id, category_id)
+                values (#{id}, #{category_id})
+            ")
         end
 
         delete_categories_id.each do | category_id |
-            client.query("delete from item_categories where category_id = '#{category_id}'")
+            client.query("
+                delete from item_categories
+                where category_id = '#{category_id}'
+            ")
         end
     end
 
@@ -76,9 +76,15 @@ class Item
     def delete
         client = create_db_client
 
-        client.query("delete from item_categories where item_id = #{@id}")
+        client.query("
+            delete from item_categories
+            where item_id = #{@id}
+        ")
     
-        client.query("delete from items where id = #{@id}")
+        client.query("
+            delete from items 
+            where id = #{@id}
+        ")
     end
     
     def self.get_all
@@ -100,7 +106,11 @@ class Item
         items = Array.new
         categories = Array.new
 
-        rawData = client.query("select items.id, items.name, items.price from items where items.id = #{id}")
+        rawData = client.query("
+            select items.id, items.name, items.price
+            from items 
+            where items.id = #{id}
+            ")
     
         rawData.each do |data|
             item  = Item.new(data["name"], data["price"], data["id"]);
@@ -114,7 +124,11 @@ class Item
         client = create_db_client
         items = Array.new
 
-        rawData = client.query("select * from items join item_categories on items.id = item_categories.item_id where item_categories.category_id = #{category_id}")
+        rawData = client.query("
+            select * 
+            from items 
+            join item_categories on items.id = item_categories.item_id
+            where item_categories.category_id = #{category_id}")
     
         rawData.each do |data|
             item = Item.new(data["name"], data["price"], data["id"]);

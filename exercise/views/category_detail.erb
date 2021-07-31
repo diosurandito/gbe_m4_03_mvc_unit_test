@@ -1,0 +1,18 @@
+<h1>Category Detail</h1>
+<p>Category name: <%= category.name %></p>
+<h2>Category Items</h2>
+<table>
+    <thead>
+        <tr>
+            <th>name</th>
+        </tr>
+    <thead>
+    <tbody>
+        <% category.items.each do |item| %>
+            <tr>
+                <td><%= item.name %></td>
+                <td><%= item.price %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

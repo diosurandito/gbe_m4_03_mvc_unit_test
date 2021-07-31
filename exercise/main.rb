@@ -63,7 +63,6 @@ end
 
 post '/categories/save' do
     CategoryController.save(params)
-    redirect '/categories'
 end
 
 post '/categories/:id/delete' do

@@ -13,29 +13,31 @@ class Category
     def save
         client = create_db_client
 
-        return false unless valid?
-
         client.query("insert into categories(name) values ('#{@name}')")
-    end
-
-    def valid?
-        return false if @name.empty?
-
-        true
     end
 
     def update(name, id)
         client = create_db_client
          
-        client.query("update categories set name = '#{name}' where id = #{id}")
+        client.query("
+            update categories 
+            set name = '#{name}'
+            where id = #{id}
+        ")
     end
 
     def delete
         client = create_db_client
 
-        client.query("delete from item_categories where category_id = #{@id}")
+        client.query("
+            delete from item_categories
+            where category_id = #{@id}
+        ")
     
-        client.query("delete from categories where id = #{@id}")
+        client.query("
+            delete from categories 
+            where id = #{@id}
+        ")
     end
 
     def self.get_all
@@ -70,7 +72,11 @@ class Category
         client = create_db_client
         categories = Array.new
 
-        rawData = client.query("select * from categories join item_categories on categories.id = item_categories.category_id where item_categories.item_id = #{item_id}")
+        rawData = client.query("
+            select * 
+            from categories 
+            join item_categories on categories.id = item_categories.category_id
+            where item_categories.item_id = #{item_id}")
     
         rawData.each do |data|
             category = Category.new(data["name"], data["id"]);
